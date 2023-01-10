@@ -1,17 +1,17 @@
 
 <?php 
 
-$suborPath = "log.txt";
 date_default_timezone_set("Europe/Bratislava");
 
-NapisCasDatum();
-Main();
-PrintPrichodyJson();
-PrintStudentiJson();
+writeTimeDate();
+main();
+printArrivalsJson();
+printStudentsJson();
 
 
 
-function Main(){
+function main()
+{
 
     //Vyberie meno 1. z POST, 2. z query meno, 3 z query name
     if (isset($_POST["student-name"])){
@@ -24,93 +24,102 @@ function Main(){
     }
     
     //ZapisStudentovDoJson($studentName);
-    Studenti::ZapisDoJson($studentName);
-    ZapisPrichodovDoJson();
+    Students::writeToJSON($studentName);
+    writeArrivalsJSON();
 }
 
 
 
-function ZapisPrichodovDoJson(){
-    $prichod = new Prichod();
+function writeArrivalsJSON()
+{
+    $arrival = new Arrival();
     
     
   
     
 
     //Načítanie starého Jsonu
-    $jsonPpath = 'prichody.json';
-    $jsonfile =  file_get_contents($jsonPpath);
-    $celyZaznamArr = json_decode($jsonfile);
+    $jsonPath = 'prichody.json';
+    $jsonfile =  file_get_contents($jsonPath);
+    $fullRecordArr = json_decode($jsonfile);
     
 
     //Prvé miesto v Jsone sa určí číslo počtu študentov
-    if (empty($celyZaznamArr)){
+    if (empty($fullRecordArr)){
 
-        $celyZaznamArr[0]=1;
+        $fullRecordArr[0]=1;
     } else {
-        $celyZaznamArr[0] = sizeof($celyZaznamArr);
+        $fullRecordArr[0] = sizeof($fullRecordArr);
 
     }
     
     
-    array_push($celyZaznamArr, $prichod->get_data());
-    $celyZaznamJson = json_encode($celyZaznamArr);
+    // array_push($fullRecordArr, $arrival->get_data());
+    $fullRecordArr[] = $arrival->get_data();
+    $fullRecordJSON = json_encode($fullRecordArr);
     
     
   
 
 
-    file_put_contents($jsonPpath, $celyZaznamJson);
+    file_put_contents($jsonPath, $fullRecordJSON);
 }
 
 
 
-class Studenti{
+class Students
+{
     
     
-    public static function ZapisDoJson($studentName)
+    public static function writeToJSON($studentName)
     {
         static $jsonPath = 'studenti.json';
         $jsonfile =  file_get_contents($jsonPath);
-        $celyZaznamArr = json_decode($jsonfile);
+        $fullRecordArr = json_decode($jsonfile);
         //Prvé miesto v Jsone sa určí číslo počtu študentov
-        if (empty($celyZaznamArr)){
+        if (empty($fullRecordArr)){
             
-            $celyZaznamArr =  array();
-            $novePoradie = 1;
+            $fullRecordArr =  array();
+            $newOrder = 1;
         } else {
-            $novePoradie = sizeof($celyZaznamArr) + 1;
+            $newOrder = sizeof($fullRecordArr) + 1;
 
         }
 
-        $novyStudent = $novePoradie . ". " . $studentName;
-        //$novyStudent = new Student($studentName, $novePoradie);
+        $newStudent = $newOrder . ". " . $studentName;
+        //$newStudent = new Student($studentName, $newOrder);
 
 
-        array_push($celyZaznamArr, $novyStudent);
+        // array_push($fullRecordArr, $newStudent);
+        $fullRecordArr[] = $newStudent;
 
-        $celyZaznamJson = json_encode($celyZaznamArr);
-        file_put_contents($jsonPath, $celyZaznamJson);
+        $fullRecordJSON = json_encode($fullRecordArr);
+        file_put_contents($jsonPath, $fullRecordJSON);
     }
 }
 
 
-class Prichod{
-    public $datumcas;
-    public $meskanie;
+class Arrival{
+    public $dateTime;
+    public $lateTxt;
 
-    function __construct() {
-        $this->datumcas = date("d/m/y-H:i:s");
-        if (IsMeskanie()) {$this->meskanie = " meskanie";}
+    function __construct() 
+    {
+        $this->dateTime = date("d/m/y-H:i:s");
+        if (IsLate()) {
+            $this->lateTxt = " meskanie";
+        }
         
     }
 
-    function get_data(){
-        return $this->datumcas . $this->meskanie . $this->chanceForHearth();
+    function get_data()
+    {
+        return $this->dateTime . $this->lateTxt . $this->chanceForHearth();
     }
 
     //Privatna feature
-    private function chanceForHearth(){
+    private function chanceForHearth()
+    {
         if (mt_rand(0,1) == 1){
             return " <3";
         } else {
@@ -123,25 +132,27 @@ class Prichod{
 }
 
 
-function PrintStudentiJson(){
+function printStudentsJson()
+{
     //Načítanie Jsonu
-    $jsonPpath = 'studenti.json';
-    $jsonfile =  file_get_contents($jsonPpath);
-    $celyZaznamArr = json_decode($jsonfile);
+    $jsonPath = 'studenti.json';
+    $jsonfile =  file_get_contents($jsonPath);
+    $fullRecordArr = json_decode($jsonfile);
     
     print "<pre>";
-    print_r($celyZaznamArr);
+    print_r($fullRecordArr);
     print "</pre>";
 
 }
-function PrintPrichodyJson(){
+function printArrivalsJson()
+{
     //Načítanie Jsonu
-    $jsonPpath = 'prichody.json';
-    $jsonfile =  file_get_contents($jsonPpath);
-    $celyZaznamArr = json_decode($jsonfile);
+    $jsonPath = 'prichody.json';
+    $jsonfile =  file_get_contents($jsonPath);
+    $fullRecordArr = json_decode($jsonfile);
     
     print "<pre>";
-    print_r($celyZaznamArr);
+    print_r($fullRecordArr);
     print "</pre>";
 
 }
@@ -149,22 +160,23 @@ function PrintPrichodyJson(){
 
 
 
-function IsMeskanie(){
-    $hodina = date("H");
+function IsLate()
+{
+    $hour = date("H");
     
  
     //Meškanie
-    if ($hodina >= 20 && $hodina<=24){
+    if ($hour >= 20 && $hour<=24){
         die("To je nemožné!");
     }
 
-    if ($hodina == 8){
+    if ($hour == 8){
         if (date("i") > 0){
             //Meškanie
             return true;
         }
     }
-    if ($hodina > 8 ){
+    if ($hour > 8 ){
         
         //Meškanie
         return true;
@@ -175,7 +187,8 @@ function IsMeskanie(){
 
 
 
-function NapisCasDatum(){
+function writeTimeDate()
+{
     echo("Dátum: " . date("d/m/y"));
     echo("<br>");
     echo("Čas: " . date("H:i:s"));
