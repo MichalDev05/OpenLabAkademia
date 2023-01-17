@@ -3,7 +3,8 @@
 use Michal\Logovac\Models\Prichod;
 
 
-Route::post("api/newRecord",function(){
+Route::post("api/newRecord",function()
+{
 
     if (!isset($_POST["name"])){
         die("error: name is null");
@@ -21,7 +22,8 @@ Route::post("api/newRecord",function(){
 
 
 
-Route::get("api/getAllRecords",function(){
+Route::get("api/getAllRecords",function()
+{
 
 
     return Prichod::get();
