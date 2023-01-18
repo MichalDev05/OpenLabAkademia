@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Log
+
+# Model Form Field configuration
+form: $/michal/logger/models/log/fields.yaml
+
+# Model Class name
+modelClass: Michal\Logger\Models\Log
+
+# Default redirect location
+defaultRedirect: michal/logger/logs
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: michal/logger/logs/update/:id
+    redirectClose: michal/logger/logs
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: michal/logger/logs
+    redirectClose: michal/logger/logs
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title
