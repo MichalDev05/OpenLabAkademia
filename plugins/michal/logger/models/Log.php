@@ -17,7 +17,7 @@ class Log extends Model
     /**
      * @var array Guarded fields
      */
-    protected $guarded = ['*'];
+    protected $guarded = [];
 
     /**
      * @var array Fillable fields
@@ -56,6 +56,7 @@ class Log extends Model
         'created_at',
         'updated_at'
     ];
+
 
     /**
      * @var array Relations
