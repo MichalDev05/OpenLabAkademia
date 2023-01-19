@@ -1,0 +1,26 @@
+title = "Login"
+url = "/login"
+layout = "default"
+is_hidden = 0
+
+[session]
+security = "all"
+==
+<div style="text-align:center;">
+
+<h2>Log In</h2>
+
+{% if user %}
+    <p>Hello {{ user.name }}</p>
+{% else %}
+    <p>Nobody is logged in</p>
+{% endif %}
+
+
+</div>
+
+
+
+
+
+{% component 'session' %}

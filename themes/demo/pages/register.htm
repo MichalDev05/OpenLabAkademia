@@ -1,0 +1,17 @@
+title = "Register"
+url = "/register"
+layout = "default"
+is_hidden = 0
+
+[session]
+security = "all"
+
+[account]
+paramCode = "code"
+forceSecure = 0
+requirePassword = 0
+==
+{% component 'account' %}
+{% component 'session' %}
+
+<a data-request="onLogout" data-request-data="redirect: '/good-bye'">Sign out</a>

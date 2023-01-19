@@ -25,16 +25,6 @@ class Plugin extends PluginBase
     }
 
     /**
-     * Register method, called when the plugin is first registered.
-     *
-     * @return void
-     */
-    public function register()
-    {
-
-    }
-
-    /**
      * Boot method, called right before the request route.
      *
      * @return array

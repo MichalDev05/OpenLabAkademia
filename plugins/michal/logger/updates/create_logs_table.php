@@ -12,6 +12,7 @@ class CreateLogsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
+            $table->string('user_id');
             $table->timestamps();
         });
     }
