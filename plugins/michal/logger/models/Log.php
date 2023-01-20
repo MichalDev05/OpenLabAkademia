@@ -9,6 +9,7 @@ class Log extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
+
     /**
      * @var string The database table used by the model.
      */
@@ -61,11 +62,23 @@ class Log extends Model
     /**
      * @var array Relations
      */
+
+
+
+    public $belongsTo = [
+
+        'user' => [
+            'RainLab\User\Models\User',
+            'key' => "user_id"
+        ]
+    ];
+
+
+
     public $hasOne = [];
     public $hasMany = [];
     public $hasOneThrough = [];
     public $hasManyThrough = [];
-    public $belongsTo = [];
     public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
