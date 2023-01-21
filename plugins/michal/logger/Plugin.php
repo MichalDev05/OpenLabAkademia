@@ -2,6 +2,10 @@
 
 use Backend;
 use System\Classes\PluginBase;
+use Michal\Logger\Classes\Extend\UserExtend;
+use Michal\Logger\Models\Log;
+
+
 
 /**
  * logger Plugin Information File
@@ -74,4 +78,18 @@ class Plugin extends PluginBase
             ],
         ];
     }
+
+
+    public function boot(){
+        UserExtend::extendUser();
+
+
+        Log::extend(function ($model) {
+            $model->bindEvent('model.beforeFetch', function () use ($model) {
+                echo("Extended! ");
+            });
+        });
+
+    }
+
 }

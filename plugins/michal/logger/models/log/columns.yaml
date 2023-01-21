@@ -6,6 +6,12 @@ columns:
     id:
         label: ID
         searchable: true
-    name:
-        label: Meno
-        searchable: true
+    # name:
+    #     label: Meno
+    #     searchable: true
+    user:
+        label: Používateľ
+        relation: user
+        select: name
+    created_at:
+        label: prichod

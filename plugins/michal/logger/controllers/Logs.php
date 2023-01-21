@@ -4,6 +4,7 @@ use BackendMenu;
 use Michal\Logger\Models\Log;
 use Backend\Classes\Controller;
 use Rainlab\User\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 
 /**
  * Logs Back-end Controller
@@ -65,8 +66,10 @@ class Logs extends Controller
 
     public function getMyRecords()
     {
+
+
         return Log::where('user_id', auth()->user()->id)->get();
-        return  auth()->user()->id;
+
     }
 
     public function newLog(){
@@ -76,6 +79,9 @@ class Logs extends Controller
         ]);
         return (auth()->user()->name);
     }
+
+
+
 
 
 
