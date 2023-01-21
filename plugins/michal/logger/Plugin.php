@@ -4,6 +4,7 @@ use Backend;
 use System\Classes\PluginBase;
 use Michal\Logger\Classes\Extend\UserExtend;
 use Michal\Logger\Models\Log;
+use Illuminate\Support\Facades\Event;
 
 
 
@@ -89,6 +90,14 @@ class Plugin extends PluginBase
                 echo("Extended! ");
             });
         });
+
+
+        Event::listen('customEvent', function() {
+
+
+            return "Event Reacted";
+        });
+
 
     }
 
