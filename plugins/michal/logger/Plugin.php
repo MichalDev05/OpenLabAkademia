@@ -85,13 +85,6 @@ class Plugin extends PluginBase
         UserExtend::extendUser();
 
 
-        Log::extend(function ($model) {
-            $model->bindEvent('model.beforeFetch', function () use ($model) {
-                echo("Extended! ");
-            });
-        });
-
-
         Event::listen('customEvent', function() {
 
 
