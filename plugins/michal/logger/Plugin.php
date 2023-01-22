@@ -88,7 +88,7 @@ class Plugin extends PluginBase
         Event::listen('customEvent', function() {
 
 
-            return "Event Reacted";
+            echo "Event Reacted";
         });
 
 

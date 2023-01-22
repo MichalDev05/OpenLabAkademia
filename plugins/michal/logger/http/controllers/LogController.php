@@ -2,19 +2,19 @@
 
 namespace Michal\Logger\Http\Controllers;
 
-use Michal\Logger\Http\Resources\LogsApiResources;
+use Michal\Logger\Http\Resources\LogResource;
 use Rainlab\User\Facades\Auth;
 use Michal\Logger\Models\Log;
 use Illuminate\Support\Facades\Event;
 
 
-    class LogsApiController{
+    class LogController{
 
         public function getAllRecords()
         {
 
 
-            return LogsApiResources::allRecords();
+            return LogResource::collection(Log::all());
         }
 
         // public function loginLog()
@@ -35,16 +35,24 @@ use Illuminate\Support\Facades\Event;
 
         public function getMyRecords()
         {
-            echo(Event::fire("customEvent")[0] . " <br>");
+            Event::fire("customEvent");
 
-            return LogsApiResources::userRecords();
+            return LogResource::collection(Log::where("user_id", auth()->user()->id)->get());
+
 
         }
 
 
 
         public function newLog(){
-            return LogsApiResources::newLog();
+
+            Log::create([
+                'name' => auth()->user()->name,
+                'user_id' => auth()->user()->id
+            ]);
+
+            return;
+
         }
     }
 

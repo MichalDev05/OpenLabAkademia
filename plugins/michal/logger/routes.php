@@ -1,6 +1,6 @@
 <?php
 
-use Michal\Logger\Http\Controllers\LogsApiController;
+use Michal\Logger\Http\Controllers\LogController;
 use Michal\Logger\Models\Log;
 use October\Rain\Auth\Manager;
 
@@ -17,14 +17,15 @@ Route::prefix('api/v1')->group(function () {
     //     return Log::get();
     // });
 
-    Route::get("getAllRecords", [LogsApiController::class, 'getAllRecords']);
 
 
-    Route::post("loginLog", [LogsApiController::class, 'loginLog']);
+    //Route::post("loginLog", [LogsApiController::class, 'loginLog']);
+
+    Route::get("getAllRecords", [LogController::class, 'getAllRecords']);
 
     Route::middleware(['auth'])->group(function () {
-        Route::get("getMyRecords", [LogsApiController::class, 'getMyRecords']);
-        Route::get("newLog", [LogsApiController::class, 'newLog']);
+        Route::get("getMyRecords", [LogController::class, 'getMyRecords']);
+        Route::get("newLog", [LogController::class, 'newLog']);
 
     });
     // Route::post("loginLog",function()
